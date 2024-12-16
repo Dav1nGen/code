@@ -1,10 +1,17 @@
 add_rules("mode.debug", "mode.release")
+set_languages("c++17")
+
+add_requires("opencv4")  -- 声明依赖库并自动查找、下载和编译
 
 target("cpp_practice")
     set_kind("binary")
     add_files("src/*.cpp")
+    add_packages("opencv4")  -- 添加外部依赖库的头文件、库文件和链接选项
+
 
 add_includedirs("/usr/include", "/usr/local/include", "./include")
+add_linkdirs("/usr/local/lib", "/usr/lib")
+
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
