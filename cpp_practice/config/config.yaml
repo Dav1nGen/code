@@ -1,7 +1,5 @@
 %YAML:1.0
 ---
-
-
-width:640 
-height:480 
-fps:30
+width: 100
+height: 200
+fps: 300

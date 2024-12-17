@@ -23,6 +23,31 @@ namespace thread
 
             this->fs = file_storage;
         }
+        ~FileReader()
+        {
+            this->fs.release();
+        }
+        cv::FileStorage fs;
+
+    private:
+        std::string _file_path;
+    };
+
+    class FileWriter
+    {
+    public:
+        FileWriter(std::string file_path) : _file_path(file_path)
+        {
+            cv::FileStorage file_storage(_file_path, cv::FileStorage::WRITE);
+            assert(file_storage.isOpened());
+            std::cout << "File opened successfully" << "\n";
+
+            this->fs = file_storage;
+        }
+        FileWriter()
+        {
+            this->fs.release();
+        }
         cv::FileStorage fs;
 
     private:
@@ -37,10 +62,32 @@ namespace thread
         std::thread t([]()
                       { std::cout << "Hello from thread!" << "\n"; });
         t.join();
-        FileReader fr("../../../../config/config.yaml");
-        fr.fs["width"] >> width;
-        fr.fs["height"] >> height;
-        fr.fs["fps"] >> fps;
+
+        {
+            FileReader fr("../../../../config/config.yaml");
+            fr.fs["width"] >> width;
+            fr.fs["height"] >> height;
+            fr.fs["fps"] >> fps;
+        }
+
+        std::cout << "width: " << width << "\n"
+                  << "height: " << height << "\n"
+                  << "fps: " << fps << "\n";
+        {
+            FileWriter fw("../../../../config/config.yaml");
+            fw.fs << "width" << 100;
+            fw.fs << "height" << 200;
+            fw.fs << "fps" << 300;
+        }
+        
+
+        {
+            FileReader fr("../../../../config/config.yaml");
+            fr.fs["width"] >> width;
+            fr.fs["height"] >> height;
+            fr.fs["fps"] >> fps;
+        }
+        
 
         std::cout << "width: " << width << "\n"
                   << "height: " << height << "\n"
