@@ -1,5 +1,5 @@
 #include "smart_ptr.hpp"
-#include "thread.hpp"
+#include "file_storage.hpp"
 
 int main(int argc, char **argv)
 {

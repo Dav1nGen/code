@@ -1,5 +1,5 @@
-#ifndef CPP_PRACTICE_THREAD_HPP
-#define CPP_PRACTICE_THREAD_HPP
+#ifndef CPP_PRACTICE_FILE_STORAGE_HPP
+#define CPP_PRACTICE_FILE_STORAGE_HPP
 
 #include <iostream>
 #include <string>
@@ -44,7 +44,7 @@ namespace thread
 
             this->fs = file_storage;
         }
-        FileWriter()
+        ~FileWriter()
         {
             this->fs.release();
         }
@@ -59,9 +59,6 @@ namespace thread
         int width;
         int height;
         int fps;
-        std::thread t([]()
-                      { std::cout << "Hello from thread!" << "\n"; });
-        t.join();
 
         {
             FileReader fr("../../../../config/config.yaml");
@@ -95,4 +92,4 @@ namespace thread
     }
 }
 
-#endif // CPP_PRACTICE_THREAD_HPP
+#endif // CPP_PRACTICE_FILE_STORAGE_HPP
