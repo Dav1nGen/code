@@ -2,3 +2,8 @@
 
 #include <iostream>
 #include <thread>
+
+namespace thread
+{
+    
+}
