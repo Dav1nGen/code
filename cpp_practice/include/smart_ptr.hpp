@@ -24,10 +24,6 @@ private:
   std::size_t age;
 };
 
-/**
- * @brief for test in main.cpp
- *
- */
 void TestSharedPtr() {
   std::shared_ptr<Person> person = std::make_shared<Person>(180, man, 30);
   std::weak_ptr<Person> weak_ptr = person;
