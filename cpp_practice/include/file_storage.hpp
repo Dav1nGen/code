@@ -1,11 +1,10 @@
-#ifndef CPP_PRACTICE_INCLUDE_FILE_STORAGE_HPP
-#define CPP_PRACTICE_INCLUDE_FILE_STORAGE_HPP
+#pragma once
 
 #include <iostream>
 #include <string>
 #include <assert.h>
 
-#include <thread>
+
 #include <opencv4/opencv2/opencv.hpp>
 #include <opencv4/opencv2/core.hpp>
 #include <opencv4/opencv2/core/persistence.hpp>
@@ -112,5 +111,3 @@ namespace file_storage
                   << "fps: " << fps << "\n";
     }
 }
-
-#endif // CPP_PRACTICE_INCLUDE_FILE_STORAGE_HPP
