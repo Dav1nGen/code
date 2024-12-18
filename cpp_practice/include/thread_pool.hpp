@@ -14,6 +14,7 @@
 #include <atomic>
 #include <condition_variable>
 #include <functional>
+#include <iostream>
 #include <memory>
 #include <mutex>
 #include <queue>
@@ -30,7 +31,7 @@ class Task
 public:
     using TaskFunction = std::function<void()>;
 
-    Task(TaskFunction& func) : function_(std::move(func)) {}
+    Task(TaskFunction&& func) : function_(std::move(func)) {}
     ~Task() = default;
 
     void Execute()
@@ -80,10 +81,10 @@ private:
 class ThreadPool
 {
 public:
-    ThreadPool(size_t numThreads) : is_running_(true)
+    ThreadPool(size_t threads_num) : is_running_(true)
     {
         // 创建线程池中的线程
-        for (size_t i = 0; i < numThreads; ++i)
+        for (size_t i = 0; i < threads_num; ++i)
         {
             threads_.emplace_back(&ThreadPool::Worker, this);
         }
@@ -124,5 +125,15 @@ private:
     TaskQueue taskQueue_;               // 任务队列
     std::atomic<bool> is_running_;      // 线程池是否处于运行状态
 };
+
+void TestThreadPool()
+{
+    ThreadPool pool(4);
+    for (int i = 0; i < 10; ++i)
+    {
+        pool.Submit(std::make_shared<Task>(
+            [i]() { std::cout << "Task " << i << "\n"; }));
+    }
+}
 
 }  // namespace thread_pool
