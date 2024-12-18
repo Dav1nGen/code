@@ -1,5 +1,5 @@
-#ifndef CPP_PRACTICE_FILE_STORAGE_HPP
-#define CPP_PRACTICE_FILE_STORAGE_HPP
+#ifndef CPP_PRACTICE_INCLUDE_FILE_STORAGE_HPP
+#define CPP_PRACTICE_INCLUDE_FILE_STORAGE_HPP
 
 #include <iostream>
 #include <string>
@@ -10,7 +10,7 @@
 #include <opencv4/opencv2/core.hpp>
 #include <opencv4/opencv2/core/persistence.hpp>
 
-namespace thread
+namespace file_storage
 {
     class FileReader
     {
@@ -18,8 +18,13 @@ namespace thread
         FileReader(std::string file_path) : _file_path(file_path)
         {
             cv::FileStorage file_storage(_file_path, cv::FileStorage::READ);
-            assert(file_storage.isOpened());
-            std::cout << "File opened successfully" << "\n";
+
+            if (!file_storage.isOpened())
+            {
+                std::string error_msg = "File \"" + file_path + "\" open failed.";
+                std::cerr << error_msg << std::endl;
+                throw std::runtime_error(error_msg);
+            }
 
             this->fs = file_storage;
         }
@@ -27,10 +32,23 @@ namespace thread
         {
             this->fs.release();
         }
-        cv::FileStorage fs;
+
+        template <typename T>
+        T Read(std::string key)
+        {
+            const char* cstr = key.c_str();
+            if (fs[cstr].empty())
+            {
+                throw std::runtime_error("Key: \"" + key + "\" not found in the file.");
+            }
+            T value;
+            fs[cstr] >> value;
+            return value;
+        }
 
     private:
         std::string _file_path;
+        cv::FileStorage fs;
     };
 
     class FileWriter
@@ -39,8 +57,13 @@ namespace thread
         FileWriter(std::string file_path) : _file_path(file_path)
         {
             cv::FileStorage file_storage(_file_path, cv::FileStorage::WRITE);
-            assert(file_storage.isOpened());
-            std::cout << "File opened successfully" << "\n";
+
+            if (!file_storage.isOpened())
+            {
+                std::string error_msg = "File \"" + file_path + "\" open failed.";
+                std::cerr << error_msg << std::endl;
+                throw std::runtime_error(error_msg);
+            }
 
             this->fs = file_storage;
         }
@@ -62,9 +85,9 @@ namespace thread
 
         {
             FileReader fr("../../../../config/config.yaml");
-            fr.fs["width"] >> width;
-            fr.fs["height"] >> height;
-            fr.fs["fps"] >> fps;
+            width = fr.Read<int>(std::string("width"));
+            height = fr.Read<int>(std::string("height"));
+            fps = fr.Read<int>(std::string("fps"));
         }
 
         std::cout << "width: " << width << "\n"
@@ -76,15 +99,13 @@ namespace thread
             fw.fs << "height" << 200;
             fw.fs << "fps" << 300;
         }
-        
 
         {
             FileReader fr("../../../../config/config.yaml");
-            fr.fs["width"] >> width;
-            fr.fs["height"] >> height;
-            fr.fs["fps"] >> fps;
+            width = fr.Read<int>(std::string("width"));
+            height = fr.Read<int>(std::string("height"));
+            fps = fr.Read<int>(std::string("fps"));
         }
-        
 
         std::cout << "width: " << width << "\n"
                   << "height: " << height << "\n"
@@ -92,4 +113,4 @@ namespace thread
     }
 }
 
-#endif // CPP_PRACTICE_FILE_STORAGE_HPP
+#endif // CPP_PRACTICE_INCLUDE_FILE_STORAGE_HPP

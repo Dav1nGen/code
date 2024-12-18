@@ -1,5 +1,5 @@
 add_rules("mode.debug","mode.release")
-set_languages("c++17")
+set_languages("c++23")
 
 add_requires("opencv4")  -- 声明依赖库并自动查找、下载和编译
 

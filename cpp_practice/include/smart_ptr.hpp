@@ -1,5 +1,5 @@
-#ifndef CPP_PRACTCE_HPP
-#define CPP_PRACTCE_HPP
+#ifndef CPP_PRACTCE_INCLUDE_SMART_PTR_HPP
+#define CPP_PRACTCE_INCLUDE_SMART_PTR_HPP
 
 #include <memory>
 #include <iostream>
@@ -57,4 +57,4 @@ namespace smart_ptr
 
 } // namespace smart_ptr
 
-#endif // CPP_PRACTCE_HPP
+#endif // CPP_PRACTCE_INCLUDE_SMART_PTR_HPP

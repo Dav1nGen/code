@@ -3,7 +3,6 @@
 
 int main(int argc, char **argv)
 {
-  // smart_ptr::Test1();
-  thread::Test1();
+  file_storage::Test1();
   return 0;
 }
